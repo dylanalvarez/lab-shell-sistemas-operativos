@@ -7,8 +7,7 @@ static char buffer[BUFLEN];
 // and prints the prompt
 char *read_line(const char *prompt) {
 
-    int i = 0,
-            c = 0;
+    int i = 0, c = 0;
 
     fprintf(stdout, "%s %s %s\n", COLOR_RED, prompt, COLOR_RESET);
     fprintf(stdout, "%s", "$ ");
@@ -31,4 +30,3 @@ char *read_line(const char *prompt) {
 
     return buffer;
 }
-
