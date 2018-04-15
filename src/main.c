@@ -3,14 +3,14 @@
 #include "readline.h"
 #include "runcmd.h"
 
-char promt[PRMTLEN] = {0};
+char prompt[PRMTLEN] = {0};
 
 // runs a shell command
 static void run_shell() {
 
     char *cmd;
 
-    while ((cmd = read_line(promt)) != NULL)
+    while ((cmd = read_line(prompt)) != NULL)
         if (run_cmd(cmd) == EXIT_SHELL)
             return;
 }
@@ -26,7 +26,7 @@ static void init_shell() {
         snprintf(buf, sizeof buf, "cannot cd to %s ", home);
         perror(buf);
     } else {
-        snprintf(promt, sizeof promt, "(%s)", home);
+        snprintf(prompt, sizeof prompt, "(%s)", home);
     }
 }
 

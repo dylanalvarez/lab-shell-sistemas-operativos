@@ -10,7 +10,7 @@ int run_cmd(char *cmd) {
     struct cmd *parsed;
 
     // if the "enter" key is pressed
-    // just print the promt again
+    // just print the prompt again
     if (cmd[0] == END_STRING)
         return 0;
 

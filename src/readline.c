@@ -3,14 +3,14 @@
 
 static char buffer[BUFLEN];
 
-// read a line from the standar input
+// read a line from the standard input
 // and prints the prompt
-char *read_line(const char *promt) {
+char *read_line(const char *prompt) {
 
     int i = 0,
             c = 0;
 
-    fprintf(stdout, "%s %s %s\n", COLOR_RED, promt, COLOR_RESET);
+    fprintf(stdout, "%s %s %s\n", COLOR_RED, prompt, COLOR_RESET);
     fprintf(stdout, "%s", "$ ");
 
     memset(buffer, 0, BUFLEN);
