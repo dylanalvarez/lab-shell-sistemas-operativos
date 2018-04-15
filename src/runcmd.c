@@ -22,7 +22,7 @@ int run_cmd(char *cmd) {
     if (exit_shell(cmd))
         return EXIT_SHELL;
 
-    // pwd buil-in call
+    // pwd built-in call
     if (pwd(cmd))
         return 0;
 
