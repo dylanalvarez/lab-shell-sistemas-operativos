@@ -55,17 +55,16 @@ static int open_redir_fd(char *file) {
 // - check how the 'cmd' structs are defined
 // 	in types.h
 void exec_cmd(struct cmd *cmd) {
-
     switch (cmd->type) {
-
         case EXEC:
             // spawns a command
-            //
-            // Your code here
-            printf("Commands are not yet implemented\n");
-            _exit(-1);
+            if (execvp(
+                    ((struct execcmd *) cmd)->argv[0],
+                    ((struct execcmd *) cmd)->argv
+            ) == -1) {
+                perror(SHELL_NAME);
+            }
             break;
-
         case BACK: {
             // runs a command in background
             //
@@ -74,7 +73,6 @@ void exec_cmd(struct cmd *cmd) {
             _exit(-1);
             break;
         }
-
         case REDIR: {
             // changes the input/output/stderr flow
             //
@@ -83,7 +81,6 @@ void exec_cmd(struct cmd *cmd) {
             _exit(-1);
             break;
         }
-
         case PIPE: {
             // pipes two commands
             //
@@ -96,6 +93,8 @@ void exec_cmd(struct cmd *cmd) {
 
             break;
         }
+        default:
+            break;
     }
 }
 

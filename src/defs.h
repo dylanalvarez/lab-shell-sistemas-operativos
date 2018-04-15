@@ -15,6 +15,8 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
+#define SHELL_NAME "shell"
+
 // color scape strings
 #define COLOR_BLUE "\x1b[34m"
 #define COLOR_RED "\x1b[31m"

@@ -95,9 +95,9 @@ static bool parse_environ_var(struct execcmd *c, char *arg) {
 // - expand it and copy the value
 // 	 to 'arg' 
 static char *expand_environ_var(char *arg) {
-
-    // Your code here
-
+    char *env;
+    if (arg[0] == '$' && (env = getenv(&arg[1])) != NULL)
+        strcpy(arg, env);
     return arg;
 }
 
