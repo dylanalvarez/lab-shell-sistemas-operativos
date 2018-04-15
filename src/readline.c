@@ -5,30 +5,30 @@ static char buffer[BUFLEN];
 
 // read a line from the standar input
 // and prints the prompt
-char* read_line(const char* promt) {
+char *read_line(const char *promt) {
 
-	int i = 0,
-	    c = 0;
+    int i = 0,
+            c = 0;
 
-	fprintf(stdout, "%s %s %s\n", COLOR_RED, promt, COLOR_RESET);
-	fprintf(stdout, "%s", "$ ");
+    fprintf(stdout, "%s %s %s\n", COLOR_RED, promt, COLOR_RESET);
+    fprintf(stdout, "%s", "$ ");
 
-	memset(buffer, 0, BUFLEN);
-	
-	c = getchar();
+    memset(buffer, 0, BUFLEN);
 
-	while (c != END_LINE && c != EOF) {
-		buffer[i++] = c;
-		c = getchar();
-	}
-		
-	// if the user press ctrl+D
-	// just exit normally
-	if (c == EOF)
-		return NULL;
+    c = getchar();
 
-	buffer[i] = END_STRING;
+    while (c != END_LINE && c != EOF) {
+        buffer[i++] = c;
+        c = getchar();
+    }
 
-	return buffer;
+    // if the user press ctrl+D
+    // just exit normally
+    if (c == EOF)
+        return NULL;
+
+    buffer[i] = END_STRING;
+
+    return buffer;
 }
 

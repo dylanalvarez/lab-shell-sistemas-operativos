@@ -2,11 +2,11 @@
 
 // returns true if the 'exit' call
 // should be performed
-int exit_shell(char* cmd) {
+int exit_shell(char *cmd) {
 
-	// Your code here 
+    // Your code here
 
-	return 0;
+    return 0;
 }
 
 // returns true if "chdir" was performed
@@ -14,19 +14,19 @@ int exit_shell(char* cmd) {
 // 	$ cd directory (change to 'directory')
 // 	$ cd (change to HOME)
 // it has to be executed and then return true
-int cd(char* cmd) {
-	
-	// Your code here
+int cd(char *cmd) {
 
-	return 0;
+    // Your code here
+
+    return 0;
 }
 
 // returns true if 'pwd' was invoked
 // in the command line
-int pwd(char* cmd) {
+int pwd(char *cmd) {
 
-	// Your code here
-	
-	return 0;
+    // Your code here
+
+    return 0;
 }
 

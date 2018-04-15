@@ -6,9 +6,9 @@
 
 extern int status;
 
-void print_status_info(struct cmd* cmd);
+void print_status_info(struct cmd *cmd);
 
-void print_back_info(struct cmd* back);
+void print_back_info(struct cmd *back);
 
 #endif // PRINTSTATUS_H
 
