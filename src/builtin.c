@@ -3,10 +3,7 @@
 // returns true if the 'exit' call
 // should be performed
 int exit_shell(char *cmd) {
-
-    // Your code here
-
-    return 0;
+    return strncmp(cmd, "exit", 4) == 0;
 }
 
 // returns true if "chdir" was performed
