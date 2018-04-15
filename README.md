@@ -85,9 +85,7 @@ _<u>Pregunta</u>_: ¿entre `cd` y `pwd`, alguno de los dos se podría implementa
 
 ### Variables de entorno adicionales ☆☆
 
-En esta parte se va a extender la funcionalidad del *shell* para que soporte el poder incorporar nuevas variables de entorno a la ejecución de un programa. Cualquier programa que hagamos en C, por ejemplo, tiene acceso a todas las variables de entorno definidas mediante la variable externa *environ* (`extern char** environ`).[^noinc]
-
-[^noinc]: No es necesario realizar el _include_ de ningún header para hacer uso de esta variable.
+En esta parte se va a extender la funcionalidad del *shell* para que soporte el poder incorporar nuevas variables de entorno a la ejecución de un programa. Cualquier programa que hagamos en C, por ejemplo, tiene acceso a todas las variables de entorno definidas mediante la variable externa *environ* (`extern char** environ`). (No es necesario realizar el _include_ de ningún header para hacer uso de esta variable)
 
 Se pide, entonces, la posibilidad de incorporar de forma dinámica nuevas variables, por ejemplo:
 
