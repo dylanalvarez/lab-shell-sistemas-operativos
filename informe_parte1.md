@@ -9,7 +9,7 @@ Dylan Alvarez, 98225
 
 - _<u>Pregunta:</u>_ ¿cuáles son las diferencias entre la *syscall* `execve(2)` y la familia de *wrappers* proporcionados por la librería estándar de *C* (*libc*) `exec(3)`?
 
-- _<u>Respuesta:</u>_ La syscall `execve(2)` toma la ruta absoluta del archivo ejecutable, mientras que los wrappers de la librería estándar permiten resolver rutas relativas, si la ruta dada no comienza con `'/'`.
+- _<u>Respuesta:</u>_ La syscall `execve(2)` toma la ruta absoluta del archivo ejecutable, mientras que los wrappers de la librería estándar permiten resolver rutas relativas, si la ruta dada no comienza con `'/'`. Además, otorgan firmas de función alternativas para facilitar usos comunes.
 
 ### Código modificado para la parte 1
 
@@ -46,7 +46,8 @@ parsing.c
 static char *expand_environ_var(char *arg) {
     char *env;
     if (arg[0] == '$' && (env = getenv(&arg[1])) != NULL)
-        strcpy(arg, env);
+        strncpy(arg, env, ARGSIZE);
+        arg[ARGSIZE - 1] = 0;
     return arg;
 }
 ```

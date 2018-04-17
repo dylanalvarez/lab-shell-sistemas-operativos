@@ -97,7 +97,8 @@ static bool parse_environ_var(struct execcmd *c, char *arg) {
 static char *expand_environ_var(char *arg) {
     char *env;
     if (arg[0] == '$' && (env = getenv(&arg[1])) != NULL)
-        strcpy(arg, env);
+        strncpy(arg, env, ARGSIZE);
+        arg[ARGSIZE - 1] = 0;
     return arg;
 }
 
