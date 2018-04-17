@@ -1,7 +1,7 @@
 # Lab Shell
 
 Dylan Alvarez, 98225    
-1º cuatrimestre, 2018
+1º cuatrimestre, 20/04/2018
 
 ## Parte 1: Invocación de comandos
 
