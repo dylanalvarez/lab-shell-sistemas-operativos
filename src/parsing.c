@@ -98,7 +98,7 @@ static char *expand_environ_var(char *arg) {
     char *env;
     if (arg[0] == '$' && (env = getenv(&arg[1])) != NULL)
         strncpy(arg, env, ARGSIZE);
-        arg[ARGSIZE - 1] = 0;
+    arg[ARGSIZE - 1] = 0;
     return arg;
 }
 

@@ -50,6 +50,25 @@ static int open_redir_fd(char *file) {
     return -1;
 }
 
+int replace(int newfd, char *file_name, bool write) {
+    int oldfd;
+    if ((oldfd = open(file_name,
+                      (write ? O_CREAT : 0) | (write ? O_WRONLY : O_RDONLY),
+                      S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH)) == -1) {
+        char buf[BUFLEN] = {0};
+        snprintf(buf, sizeof buf, "%s: %s", SHELL_NAME, file_name);
+        perror(buf);
+        return 1;
+    } else {
+        if (dup2(oldfd, newfd) == -1) {
+            perror(SHELL_NAME);
+            close(oldfd);
+            return 1;
+        }
+    }
+    return 0;
+}
+
 // executes a command - does not return
 //
 // Hint:
@@ -95,10 +114,16 @@ void exec_cmd(struct cmd *cmd) {
         }
         case REDIR: {
             // changes the input/output/stderr flow
-            //
-            // Your code here
-            printf("Redirections are not yet implemented\n");
-            _exit(-1);
+            int errors = 0;
+            if (execcmd->in_file[0] != 0)
+                errors += replace(STDIN_FILENO, execcmd->in_file, false);
+            if (execcmd->out_file[0] != 0)
+                errors += replace(STDOUT_FILENO, execcmd->out_file, true);
+            if (execcmd->err_file[0] != 0)
+                errors += replace(STDERR_FILENO, execcmd->err_file, true);
+            if (errors > 0) return;
+            cmd->type = EXEC;
+            exec_cmd(cmd);
             break;
         }
         case PIPE: {

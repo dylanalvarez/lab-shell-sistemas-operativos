@@ -18,7 +18,7 @@ int cd(struct execcmd *parsed) {
         if (chdir(parsed->argc == 1 ? getenv("HOME") : parsed->argv[1]) == -1) {
             perror(SHELL_NAME);
         } else {
-            char* current_dir = get_current_dir_name();
+            char *current_dir = get_current_dir_name();
             snprintf(prompt, sizeof prompt, "(%s)", current_dir);
             free(current_dir);
         }
@@ -32,7 +32,7 @@ int cd(struct execcmd *parsed) {
 int pwd(struct execcmd *parsed) {
     bool invoked = false;
     if (parsed->argc > 0 && strcmp(parsed->argv[0], "pwd") == 0) {
-        char* current_dir = get_current_dir_name();
+        char *current_dir = get_current_dir_name();
         printf("%s\n", current_dir);
         free(current_dir);
         invoked = true;
