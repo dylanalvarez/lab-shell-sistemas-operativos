@@ -56,12 +56,33 @@ static int open_redir_fd(char *file) {
 // - check how the 'cmd' structs are defined
 // 	in types.h
 void exec_cmd(struct cmd *cmd) {
+    struct execcmd *execcmd = (struct execcmd *) cmd;
     switch (cmd->type) {
         case EXEC:
             // spawns a command
+            for (int i = 0; execcmd->eargv[i] != NULL; i++) {
+                char *name = execcmd->eargv[i];
+                char *value = NULL;
+                int position = 0;
+                while (value == NULL) {
+                    if (name[position] == '=') {
+                        name[position] = 0;
+                        value = name + position + 1;
+                    } else {
+                        position++;
+                    }
+                }
+                if (setenv(name, value, true) == -1) {
+                    char buf[BUFLEN] = {0};
+                    snprintf(buf, sizeof buf,
+                             "cannot define environment variable %s", name);
+                    perror(buf);
+                }
+                name[position] = '=';
+            }
             if (execvp(
-                    ((struct execcmd *) cmd)->argv[0],
-                    ((struct execcmd *) cmd)->argv
+                    execcmd->argv[0],
+                    execcmd->argv
             ) == -1) {
                 perror(SHELL_NAME);
             }
