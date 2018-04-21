@@ -1,14 +1,15 @@
 #ifndef BUILTIN_H
 #define BUILTIN_H
 
+#include "parsing.h"
 #include "defs.h"
 
 extern char prompt[PRMTLEN];
 
-int cd(char *cmd);
+int cd(struct execcmd *parsed);
 
-int exit_shell(char *cmd);
+int exit_shell(struct execcmd *parsed);
 
-int pwd(char *cmd);
+int pwd(struct execcmd *parsed);
 
 #endif // BUILTIN_H

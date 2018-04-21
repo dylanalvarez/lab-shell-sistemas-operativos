@@ -7,27 +7,27 @@ struct cmd *parsed_pipe;
 int run_cmd(char *cmd) {
 
     pid_t p;
-    struct cmd *parsed;
+    // parses the command line
+    struct cmd *parsed = parse_line(cmd);
 
     // if the "enter" key is pressed
     // just print the prompt again
     if (cmd[0] == END_STRING)
         return 0;
 
-    // cd built-in call
-    if (cd(cmd))
-        return 0;
+    if (parsed->type == EXEC) {
+        // cd built-in call
+        if (cd((struct execcmd *) parsed))
+            return 0;
 
-    // exit built-in call
-    if (exit_shell(cmd))
-        return EXIT_SHELL;
+        // exit built-in call
+        if (exit_shell((struct execcmd *) parsed))
+            return EXIT_SHELL;
 
-    // pwd built-in call
-    if (pwd(cmd))
-        return 0;
-
-    // parses the command line
-    parsed = parse_line(cmd);
+        // pwd built-in call
+        if (pwd((struct execcmd *) parsed))
+            return 0;
+    }
 
     // forks and run the command
     if ((p = fork()) == 0) {
