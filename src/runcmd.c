@@ -21,8 +21,10 @@ int run_cmd(char *cmd) {
             return 0;
 
         // exit built-in call
-        if (exit_shell((struct execcmd *) parsed))
+        if (exit_shell((struct execcmd *) parsed)) {
+            free_command(parsed);
             return EXIT_SHELL;
+        }
 
         // pwd built-in call
         if (pwd((struct execcmd *) parsed))
