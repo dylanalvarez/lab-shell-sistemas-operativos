@@ -57,6 +57,7 @@ static int open_redir_fd(char *file) {
 // 	in types.h
 void exec_cmd(struct cmd *cmd) {
     struct execcmd *execcmd = (struct execcmd *) cmd;
+    struct backcmd *backcmd = (struct backcmd *) cmd;
     switch (cmd->type) {
         case EXEC:
             // spawns a command
@@ -89,10 +90,7 @@ void exec_cmd(struct cmd *cmd) {
             break;
         case BACK: {
             // runs a command in background
-            //
-            // Your code here
-            printf("Background process are not yet implemented\n");
-            _exit(-1);
+            exec_cmd(backcmd->c);
             break;
         }
         case REDIR: {
