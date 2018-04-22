@@ -165,8 +165,15 @@ static struct cmd *parse_cmd(char *buf_cmd) {
 
     int idx;
 
-    // checks if the background symbol is after
-    // a redir symbol, in which case
+    // swaps &> with >&
+    if ((idx = block_contains(buf_cmd, '>')) >= 0 &&
+        buf_cmd[idx - 1] == '&') {
+        buf_cmd[idx] = '&';
+        buf_cmd[idx - 1] = '>';
+    }
+
+    // checks if the background symbol (&) is after
+    // a redir symbol (>), in which case
     // it does not have to run in in the 'back'
     if ((idx = block_contains(buf_cmd, '&')) >= 0 &&
         buf_cmd[idx - 1] != '>')

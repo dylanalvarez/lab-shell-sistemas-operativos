@@ -61,21 +61,25 @@ int replace_fd(int newfd, int oldfd) {
 
 int replace(int newfd, char *file_name, int flags) {
     int oldfd;
-    bool is_already_fd = file_name[0] == '&'
-                         && (oldfd = (int) strtol(file_name + 1, NULL, 10)) > 0;
-    if (!is_already_fd) {
+    if (file_name[0] == '&') {
+        oldfd = (int) strtol(file_name + 1, NULL, 10);
+        if (oldfd == 0) {
+            return replace(STDOUT_FILENO, file_name + 1, flags)
+                   + replace(STDERR_FILENO, file_name + 1, flags);
+        }
+    } else {
         if (file_name[0] == '>') {
             file_name += 1;
             flags |= O_APPEND;
         }
         oldfd = open(file_name, flags,
                      S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
-    }
-    if (oldfd == -1) {
-        char buf[BUFLEN] = {0};
-        snprintf(buf, sizeof buf, "%s: %s", SHELL_NAME, file_name);
-        perror(buf);
-        return 1;
+        if (oldfd == -1) {
+            char buf[BUFLEN] = {0};
+            snprintf(buf, sizeof buf, "%s: %s", SHELL_NAME, file_name);
+            perror(buf);
+            return 1;
+        }
     }
     return replace_fd(newfd, oldfd);
 }
