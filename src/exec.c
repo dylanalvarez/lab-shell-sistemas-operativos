@@ -50,23 +50,31 @@ static int open_redir_fd(char *file) {
     return -1;
 }
 
+int replace_fd(int newfd, int oldfd, bool write) {
+    if (dup2(oldfd, newfd) == -1) {
+        perror(SHELL_NAME);
+        close(oldfd);
+        return 1;
+    }
+    return 0;
+}
+
 int replace(int newfd, char *file_name, bool write) {
     int oldfd;
-    if ((oldfd = open(file_name,
-                      (write ? O_CREAT : 0) | (write ? O_WRONLY : O_RDONLY),
-                      S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH)) == -1) {
+    bool is_already_fd = file_name[0] == '&'
+                         && (oldfd = (int) strtol(file_name + 1, NULL, 10)) > 0;
+    if (!is_already_fd) {
+        oldfd = open(file_name,
+                     (write ? O_CREAT : 0) | (write ? O_WRONLY : O_RDONLY),
+                     S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
+    }
+    if (oldfd == -1) {
         char buf[BUFLEN] = {0};
         snprintf(buf, sizeof buf, "%s: %s", SHELL_NAME, file_name);
         perror(buf);
         return 1;
-    } else {
-        if (dup2(oldfd, newfd) == -1) {
-            perror(SHELL_NAME);
-            close(oldfd);
-            return 1;
-        }
     }
-    return 0;
+    return replace_fd(newfd, oldfd, write);
 }
 
 // executes a command - does not return
