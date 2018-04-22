@@ -50,7 +50,7 @@ static int open_redir_fd(char *file) {
     return -1;
 }
 
-int replace_fd(int newfd, int oldfd, bool write) {
+int replace_fd(int newfd, int oldfd) {
     if (dup2(oldfd, newfd) == -1) {
         perror(SHELL_NAME);
         close(oldfd);
@@ -59,13 +59,16 @@ int replace_fd(int newfd, int oldfd, bool write) {
     return 0;
 }
 
-int replace(int newfd, char *file_name, bool write) {
+int replace(int newfd, char *file_name, int flags) {
     int oldfd;
     bool is_already_fd = file_name[0] == '&'
                          && (oldfd = (int) strtol(file_name + 1, NULL, 10)) > 0;
     if (!is_already_fd) {
-        oldfd = open(file_name,
-                     (write ? O_CREAT : 0) | (write ? O_WRONLY : O_RDONLY),
+        if (file_name[0] == '>') {
+            file_name += 1;
+            flags |= O_APPEND;
+        }
+        oldfd = open(file_name, flags,
                      S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
     }
     if (oldfd == -1) {
@@ -74,7 +77,7 @@ int replace(int newfd, char *file_name, bool write) {
         perror(buf);
         return 1;
     }
-    return replace_fd(newfd, oldfd, write);
+    return replace_fd(newfd, oldfd);
 }
 
 // executes a command - does not return
@@ -123,12 +126,16 @@ void exec_cmd(struct cmd *cmd) {
         case REDIR: {
             // changes the input/output/stderr flow
             int errors = 0;
-            if (execcmd->in_file[0] != 0)
-                errors += replace(STDIN_FILENO, execcmd->in_file, false);
+            if (execcmd->in_file[0] != 0) {
+                errors += replace(STDIN_FILENO, execcmd->in_file,
+                                  O_RDONLY);
+            }
             if (execcmd->out_file[0] != 0)
-                errors += replace(STDOUT_FILENO, execcmd->out_file, true);
+                errors += replace(STDOUT_FILENO, execcmd->out_file,
+                                  O_CREAT | O_WRONLY);
             if (execcmd->err_file[0] != 0)
-                errors += replace(STDERR_FILENO, execcmd->err_file, true);
+                errors += replace(STDERR_FILENO, execcmd->err_file,
+                                  O_CREAT | O_WRONLY);
             if (errors > 0) return;
             cmd->type = EXEC;
             exec_cmd(cmd);
