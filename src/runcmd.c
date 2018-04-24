@@ -47,9 +47,7 @@ int run_cmd(char *cmd) {
     parsed->pid = p;
 
     // background process special treatment
-    if (parsed->type == BACK) {
-        print_back_info(parsed);
-    } else {
+    if (parsed->type != BACK) {
         // waits for the process to finish
         waitpid(p, &status, 0);
         print_status_info(parsed);
