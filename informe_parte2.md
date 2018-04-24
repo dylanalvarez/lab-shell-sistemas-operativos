@@ -120,7 +120,7 @@ int pwd(struct execcmd *parsed) {
 
 _<u>Pregunta</u>_: ¿entre `cd` y `pwd`, alguno de los dos se podría implementar sin necesidad de ser _built-in_? ¿por qué? ¿cuál es el motivo, entonces, de hacerlo como _built-in_? (para esta última pregunta pensar en los _built-in_ como `true` y `false`)
 
-_<u>Respuesta</u>_: `pwd` podría ser implementado como un comando, ya que su _working directory_ es el mismo que el del proceso padre. Se lo suele hacer como _built-in_ para evitar la generación de un nuevo proceso, con todo lo que eso implica (`fork`, `exec`) en términos de uso de recursos. Es el mismo caso con los _built-in_ `true` y `false`: el resultado obtenido (un _return code_) no amerita el uso de recursos necesario para instanciar un nuevo proceso.
+_<u>Respuesta</u>_: `pwd` podría ser implementado como un comando, ya que su _working directory_ es el mismo que el del proceso padre. Se lo suele hacer como _built-in_ para evitar la generación de un nuevo proceso, con todo lo que eso implica (`fork`, `exec`) en términos de uso de recursos. Es el mismo caso con los _built-in_ `true` y `false`: el resultado obtenido (un _return code_) no amerita el uso de recursos necesario para instanciar un nuevo proceso. En cambio, `cd` modifica el _working directory_ de la shell, y un proceso hijo no puede hacer esto, por lo que debe necesariamente ser un _built-in_.
 
 ### Variables de entorno adicionales ☆☆
 _<u>Implementación</u>_:
@@ -176,7 +176,7 @@ void exec_cmd(struct cmd *cmd) {
   - ¿el comportamiento es el mismo que en el primer caso? Explicar qué sucede y por qué.
   - Describir brevemente una posible implementación para que el comportamiento sea el mismo.
   
-  _<u>Respuesta</u>_: El comportamiento no será el mismo ya que estos wrappers utilizan ese array de variables de enotrno como únicas variables de entorno para el proceso: no 'heredan' las variables de entorno del proceso padre. Para mantener el comportamiento habría que copiar todas las variables de entorno a este arreglo además de agregarle las nuevas definiciones.
+  _<u>Respuesta</u>_: El comportamiento no será el mismo ya que estos wrappers utilizan ese array de variables de entorno como únicas variables de entorno para el proceso: no 'heredan' las variables de entorno del proceso padre. Para mantener el comportamiento habría que copiar todas las variables de entorno a este arreglo además de agregarle las nuevas definiciones.
 
 ### Procesos en segundo plano ☆☆☆
 
