@@ -65,7 +65,7 @@ int replace(int newfd, char *file_name, int flags) {
         oldfd = (int) strtol(file_name + 1, NULL, 10);
         if (oldfd == 0) {
             return replace(STDOUT_FILENO, file_name + 1, flags)
-                   + replace(STDERR_FILENO, file_name + 1, flags);
+                   + replace_fd(STDERR_FILENO, STDOUT_FILENO);
         }
     } else {
         if (file_name[0] == '>') {
