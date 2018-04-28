@@ -57,6 +57,8 @@ int run_cmd(char *cmd) {
         // waits for the process to finish
         waitpid(p, &status, 0);
         print_status_info(parsed);
+    } else {
+        print_back_info(parsed);
     }
 
     free_command(parsed);
