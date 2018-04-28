@@ -191,7 +191,7 @@ struct cmd *parse_line(char *buf) {
     char *right = split_line(buf, '|');
 
     l = parse_cmd(buf);
-    r = parse_cmd(right);
+    r = right[0] != 0 ? parse_line(right) : NULL;
 
     return pipe_cmd_create(l, r);
 }
