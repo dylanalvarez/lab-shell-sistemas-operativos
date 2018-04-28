@@ -12,13 +12,17 @@ int run_cmd(char *cmd) {
 
     // if the "enter" key is pressed
     // just print the prompt again
-    if (cmd[0] == END_STRING)
+    if (cmd[0] == END_STRING) {
+        free_command(parsed);
         return 0;
+    }
 
     if (parsed->type == EXEC) {
         // cd built-in call
-        if (cd((struct execcmd *) parsed))
+        if (cd((struct execcmd *) parsed)) {
+            free_command(parsed);
             return 0;
+        }
 
         // exit built-in call
         if (exit_shell((struct execcmd *) parsed)) {
@@ -27,8 +31,10 @@ int run_cmd(char *cmd) {
         }
 
         // pwd built-in call
-        if (pwd((struct execcmd *) parsed))
+        if (pwd((struct execcmd *) parsed)) {
+            free_command(parsed);
             return 0;
+        }
     }
 
     // forks and run the command
