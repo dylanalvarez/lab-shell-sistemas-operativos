@@ -164,10 +164,6 @@ void exec_cmd(struct cmd *cmd) {
             } else {
                 perror(SHELL_NAME);
             }
-
-            // free the memory allocated
-            // for the pipe tree structure
-            free_command(parsed_pipe);
             break;
         }
         default:
