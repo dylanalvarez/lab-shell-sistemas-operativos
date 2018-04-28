@@ -92,6 +92,8 @@ int replace(int newfd, char *file_name, int flags) {
 void exec_cmd(struct cmd *cmd) {
     struct execcmd *execcmd = (struct execcmd *) cmd;
     struct backcmd *backcmd = (struct backcmd *) cmd;
+    struct pipecmd *pipecmd = (struct pipecmd *) cmd;
+    pid_t p;
     switch (cmd->type) {
         case EXEC:
             // spawns a command
@@ -147,18 +149,28 @@ void exec_cmd(struct cmd *cmd) {
         }
         case PIPE: {
             // pipes two commands
-            //
-            // Your code here
-            printf("Pipes are not yet implemented\n");
+            int pipefd[2];
+            if (pipe(pipefd) == -1) { perror(SHELL_NAME); }
+
+            if ((p = fork()) == 0) {
+                close(pipefd[1]); // Close unused write end
+                replace_fd(STDIN_FILENO, pipefd[0]);
+                exec_cmd(pipecmd->rightcmd);
+            } else if (p > 0) {
+                close(pipefd[0]); // Close unused read end
+                replace_fd(STDOUT_FILENO, pipefd[1]);
+                exec_cmd(pipecmd->leftcmd);
+                waitpid(p, NULL, 0);
+            } else {
+                perror(SHELL_NAME);
+            }
 
             // free the memory allocated
             // for the pipe tree structure
             free_command(parsed_pipe);
-
             break;
         }
         default:
             break;
     }
 }
-
