@@ -34,6 +34,8 @@ static void init_shell() {
 }
 
 void listen_to_your_dying_child(int signal, siginfo_t *siginfo, void *context) {
+    UNUSED(signal);
+    UNUSED(context);
     if (siginfo->si_pid == last_back_pid) {
         snprintf(preprompt, PRMTLEN,
                  "==> terminado: PID=%d (%s)", siginfo->si_pid, last_back);

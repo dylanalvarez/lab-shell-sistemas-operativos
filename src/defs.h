@@ -16,6 +16,7 @@
 #include <sys/types.h>
 
 #define SHELL_NAME "shell"
+#define UNUSED(x) (void)(x)
 
 // color scape strings
 #define COLOR_BLUE "\x1b[34m"
