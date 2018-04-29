@@ -1,5 +1,4 @@
 #include "builtin.h"
-#include "freecmd.h"
 
 // returns true if the 'exit' call
 // should be performed

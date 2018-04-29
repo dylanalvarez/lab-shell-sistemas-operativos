@@ -9,6 +9,10 @@ char *read_line(const char *prompt) {
 
     int i = 0, c = 0;
 
+    if (preprompt[0] != 0) {
+        fprintf(stdout, "%s %s %s\n", COLOR_RED, preprompt, COLOR_RESET);
+        preprompt[0] = 0;
+    }
     fprintf(stdout, "%s %s %s\n", COLOR_RED, prompt, COLOR_RESET);
     fprintf(stdout, "%s", "$ ");
 

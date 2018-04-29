@@ -10,4 +10,8 @@
 
 int run_cmd(char *cmd);
 
+extern char last_back[BUFLEN];
+
+extern int last_back_pid;
+
 #endif // RUNCMD_H

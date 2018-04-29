@@ -58,6 +58,8 @@ int run_cmd(char *cmd) {
         waitpid(p, &status, 0);
         print_status_info(parsed);
     } else {
+        strncpy(last_back, ((struct backcmd *) parsed)->c->scmd, BUFLEN);
+        last_back_pid = p;
         print_back_info(parsed);
     }
 
