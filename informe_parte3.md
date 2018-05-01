@@ -33,7 +33,7 @@ Dylan Alvarez, 98225
 
   - _<u>Challenge</u>:_ investigar, describir y agregar la funcionalidad del operador de redirección **`>>`** y **`&>`**
 
-  _El operador `>>` escribe al archivo en modo `append`. El parseo dado por la cátedra ante este caso da un nombre de archivo cuyo primer caracter es `'>'`. Se aproveha esto, chequeando si es éste el primer caracter del archivo, en cuyo caso se agrega el flag `O_APPEND` a la llamada a `open`._
+  _El operador `>>` escribe al archivo en modo `append`. El parseo dado por la cátedra ante este caso da un nombre de archivo cuyo primer caracter es `'>'`. Se aprovecha esto, chequeando si es éste el primer caracter del archivo, en cuyo caso se agrega el flag `O_APPEND` a la llamada a `open`._
 
   _El operador `&>out` equivale a `>out 2>out`. En el parseo (función `parse_cmd` en `parsing.c`), transformé todo `&>` en `>&` (aprovechando que ambas formas son equivalentes). Entonces, este operador siempre va a entrar en el caso de que el "nombre de archivo" comienze con `'&'`, y que `strtol` retorne 0, ya que no se dio un file descriptor sino un nombre de archivo. Entonces, dentro de este caso se reemplaza `stdout` por el archivo dado y `stderr` por `stdout`._
   _Nótese que `0` es el file descriptor de `stdin`, al que no se puede escribir, por lo que es válido asumir que si `strtol` retorna 0, se trata de un nombre de archivo y no un file descriptor._
