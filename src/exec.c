@@ -110,7 +110,6 @@ void exec_cmd(struct cmd *cmd) {
                 close(pipefd[0]); // Close unused read end
                 replace_fd(STDOUT_FILENO, pipefd[1]);
                 exec_cmd(pipecmd->leftcmd);
-                waitpid(p, NULL, 0);
             } else {
                 perror(SHELL_NAME);
             }
